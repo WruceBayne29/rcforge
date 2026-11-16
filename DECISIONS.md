@@ -17,3 +17,10 @@ Calls made autonomously while building, newest last.
    Output columns, framed drawings with a title block, warm paper white, ink text, rust / ochre /
    olive accents, serif headings, monospace figures, square corners, underlined tabs. Light theme is
    the default regardless of system setting.
+6. **Singly reinforced design uses the code's own formula (Annex G-1.1 b, the "4.6" formula)**, as
+   every textbook does, while capacities are computed from the 0.36 / 0.42 stress block. The code
+   rounds these independently, so they differ by about 0.2 %. The flexure check therefore passes on
+   "steel provided ≥ steel required", not on comparing the two moments.
+7. **Continuous beams are designed at the first interior support** with the Table 12 / 13
+   coefficients (moment wl²/10 dead + wl²/9 imposed, shear 0.6 wl), as a rectangular section because
+   the flange is in tension there.

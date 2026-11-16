@@ -17,10 +17,12 @@ export interface SteelGrade {
   deformed: boolean;
 }
 
-export const CONCRETE_GRADES: readonly ConcreteGrade[] = [20, 25, 30, 35, 40, 45, 50].map((fck) => ({
-  name: `M${fck}`,
-  fck,
-}));
+export const CONCRETE_GRADES: readonly ConcreteGrade[] = [20, 25, 30, 35, 40, 45, 50].map(
+  (fck) => ({
+    name: `M${fck}`,
+    fck,
+  }),
+);
 
 export const STEEL_GRADES: readonly SteelGrade[] = [
   { name: 'Fe250', fy: 250, deformed: false },
