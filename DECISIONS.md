@@ -12,3 +12,8 @@ Calls made autonomously while building, newest last.
    (τc from the SP 16 expression, Annex D slab coefficients from their generating equations), so
    there are fewer hand-typed tables to get wrong. Where a table has no formula (τc,max, τbd) the
    few values are typed in and listed in VALIDATION.md.
+5. **Visual identity: an engineer's calculation sheet, not a dashboard** (owner's request: its own
+   flavour, white / neutral / autumn colours, less "AI-generated" looking). Reference | Calculations |
+   Output columns, framed drawings with a title block, warm paper white, ink text, rust / ochre /
+   olive accents, serif headings, monospace figures, square corners, underlined tabs. Light theme is
+   the default regardless of system setting.
