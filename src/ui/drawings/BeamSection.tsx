@@ -8,14 +8,14 @@ export function BeamSection({ design }: { design: BeamDesign }) {
   const flanged = input.shape !== 'rectangular';
   const { b, D, cover, stirrupDiameter: st } = input;
   const bf = flanged ? Math.max(input.bf, b) : b;
-  const W = 380;
+  const W = 400;
   const H = 300;
-  const boxW = 190;
+  const boxW = 186;
   const boxH = 205;
   const s = Math.min(boxW / bf, boxH / D);
   const top0 = 38;
   // The web sits at the left for an L-beam, in the middle otherwise.
-  const flangeLeft = 96 - (flanged ? Math.min(0, 0) : 0) + (boxW - bf * s) / 2;
+  const flangeLeft = 58 + (boxW - bf * s) / 2;
   const webLeft = input.shape === 'ell' ? flangeLeft : flangeLeft + ((bf - b) * s) / 2;
   const webRight = webLeft + b * s;
   const bottom = top0 + D * s;
@@ -57,6 +57,10 @@ export function BeamSection({ design }: { design: BeamDesign }) {
   const topY = top0 + (cover + st + top.diameter / 2) * s;
   const topBars = spread(top.count, barLeft(top.diameter), barRight(top.diameter));
   const noteX = Math.max(webRight, flangeLeft + bf * s) + 22;
+  // Keep the three notes at least a line apart, however small the section is drawn.
+  const noteTop = flanged ? flangeBottom + 12 : topY;
+  const noteMid = Math.max((top0 + bottom) / 2 + 6, noteTop + 16);
+  const noteBottom = Math.max(bottomBars[0].y, noteMid + 16);
 
   return (
     <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Beam cross-section">
@@ -112,17 +116,17 @@ export function BeamSection({ design }: { design: BeamDesign }) {
 
       <Leader
         at={[topBars[topBars.length - 1], topY]}
-        to={[noteX, topY + (flanged ? 26 : 0)]}
+        to={[noteX, noteTop]}
         text={`${top.count}–${top.diameter}φ ${design.topIsStructural ? 'compression' : 'hangers'}`}
       />
       <Leader
         at={[webRight - inset, (top0 + bottom) / 2]}
-        to={[noteX, (top0 + bottom) / 2 + 6]}
+        to={[noteX, noteMid]}
         text={`${st}φ ${input.stirrupLegs}L @ ${shear.spacing}`}
       />
       <Leader
         at={[bottomBars[Math.min(perLayer, bottomBars.length) - 1].x, bottomBars[0].y]}
-        to={[noteX, bottomBars[0].y]}
+        to={[noteX, noteBottom]}
         text={`${tension.count}–${tension.diameter}φ${tension.layers > 1 ? `, ${tension.layers} layers` : ''}`}
       />
     </svg>

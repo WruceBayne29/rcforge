@@ -70,7 +70,7 @@ export function pdfText(text: string): string {
     '…': '...',
   };
   return text
-    .replace(/[^\x20-\x7e\xa0-\xff]/g, (ch) => map[ch] ?? '?')
+    .replace(/[^\n\x20-\x7e\xa0-\xff]/g, (ch) => map[ch] ?? '?')
     .replace(/tau_ /g, 'tau ')
     .replace(/ {2,}/g, ' ');
 }
@@ -85,6 +85,11 @@ export function buildReport({
   const doc = new jsPDF({ unit: 'mm', format: 'a4', compress: true });
   const { sections, checks, status } = design.result;
   const width = PAGE_W - 2 * M;
+  const paintPage = () => {
+    doc.setFillColor(255, 255, 255);
+    doc.rect(0, 0, PAGE_W, PAGE_H, 'F');
+  };
+  paintPage();
 
   // ---- Title block ----
   const cols = [0, 0.27, 0.66, 0.86, 1].map((f) => M + f * width);
@@ -210,6 +215,9 @@ export function buildReport({
     margin: { left: M, right: M, bottom: M + 6 },
     head: [['REFERENCE', 'CALCULATIONS', 'OUTPUT']],
     body,
+    willDrawPage: (data) => {
+      if (data.pageNumber > 1) paintPage();
+    },
     theme: 'grid',
     styles: {
       font: 'courier',
@@ -238,6 +246,9 @@ export function buildReport({
     head: [
       ['MARK', 'BAR SCHEDULE (INDICATIVE)', 'BAR', 'NO.', 'LENGTH, mm', 'TOTAL, m', 'WEIGHT, kg'],
     ],
+    willDrawPage: (data) => {
+      if (data.pageNumber > 1) paintPage();
+    },
     body: [
       ...bars.map((r) => [
         r.mark,

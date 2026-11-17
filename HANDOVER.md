@@ -19,6 +19,11 @@ log it in BLOCKERS.md, skip it, and continue with other work.
 - Sister project, finished, for reference and reusable code:
   `/Users/vishnusuhaasmagadala/Desktop/frameforge` (https://github.com/WruceBayne29/frameforge)
 
+## Current state
+
+**RCForge is complete and deployed** (see PROGRESS.md). If you are picking this up, the work left is
+the next project under "After RCForge" below, plus anything the owner asks for.
+
 ## First thing to do
 
 Read, in this order: `PROGRESS.md` (state and the exact next step), `PLAN.md` (scope and

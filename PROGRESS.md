@@ -1,6 +1,6 @@
 # Progress
 
-**Status:** IN PROGRESS
+**Status:** COMPLETE — deployed at https://wrucebayne29.github.io/rcforge/
 
 ## Done
 - Scaffold (toolchain copied from FrameForge), public repo, Pages enabled, HANDOVER.md.
@@ -18,14 +18,21 @@
   number-key shortcuts, phone layout, print stylesheet.
 - `scripts/e2e.mjs`: 58 Playwright checks, passing locally.
 
-## In progress
-- Docs and deliverables.
+- Docs: README (GIF, screenshots, method, validation table, Mermaid architecture, roadmap),
+  docs/THEORY.md, VALIDATION.md, CONTRIBUTING.md, issue and PR templates, LINKEDIN_POST.md,
+  CV_BULLETS.md. `scripts/screenshots.mjs` regenerates the images.
+- Self-review from screenshots: fixed PDF line breaks, clipped and overlapping drawing labels,
+  footing drawing spacing, transparent PDF pages.
 
-## Exact next step
-1. Run `npm run e2e` against the live site after the deploy.
-2. `scripts/screenshots.mjs` (adapt from FrameForge) → docs/screenshots + hero GIF.
-3. README (full), docs/THEORY.md, CONTRIBUTING.md, issue templates, LINKEDIN_POST.md, CV_BULLETS.md.
-4. Self-review of screenshots; fix what looks wrong; mark COMPLETE.
+## Not verified / known limits
+- **Table 26** (two-way slab coefficients) was typed from memory and is only guarded by
+  consistency tests. Check it against a printed IS 456 before relying on slab results.
+- Only page 1 of the PDF was inspected by eye.
+- No dark theme (deliberate, see DECISIONS.md 11).
+
+## If you resume
+- Nothing is in progress. `npm run check` and `npm run e2e` should both pass.
+- Next project, if usage allows: the slope stability analyser described in HANDOVER.md.
 
 ## Milestone checklist
 - [x] 1. Code core: materials, flexure, shear
@@ -37,5 +44,5 @@
 - [x] 7. Full UI
 - [x] 8. Export
 - [x] 9. Polish
-- [ ] Final docs & deliverables
-- [ ] Self-review on live site
+- [x] Final docs & deliverables
+- [x] Self-review on live site

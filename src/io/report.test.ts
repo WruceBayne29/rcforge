@@ -47,6 +47,7 @@ describe('PDF calculation sheet', () => {
       "tau_v <= tau_c,max, 3-20 dia, sqrt fck × d' OK",
     );
     expect(pdfText('αx⁻ = 0.047 ☃')).toBe('alpha_x- = 0.047 ?');
+    expect(pdfText('Title\nline one\nline two')).toBe('Title\nline one\nline two');
     expect(reportFileName(EXAMPLES[0].build())).toBe('floor-beam-b1-beam.pdf');
     expect(reportFileName({ ...EXAMPLES[0].build(), title: '??' })).toBe('rcforge-beam.pdf');
   });
