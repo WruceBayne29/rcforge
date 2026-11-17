@@ -634,6 +634,36 @@ legend {
   padding-left: 18px;
 }
 
+.calc.schedule {
+  border-top: 1px solid var(--ink);
+}
+
+.calc.schedule td {
+  font-size: 13px;
+  padding: 6px 12px;
+}
+
+.calc .figure-cell {
+  font: 500 12.5px/1.6 var(--mono);
+  text-align: right;
+}
+
+.calc.schedule th:nth-child(n + 3) {
+  text-align: right;
+}
+
+.calc tr.total-row td {
+  border-bottom: 0;
+  color: var(--ink-faint);
+  font-size: 11.5px;
+}
+
+.calc tr.total-row td.figure-cell {
+  color: var(--ink);
+  font-weight: 600;
+  border-top: 1px solid var(--ink);
+}
+
 /* ---------- Toasts, dialogs ---------- */
 
 .toasts {
@@ -721,6 +751,47 @@ legend {
   color: var(--paper);
 }
 
+kbd {
+  font: 500 11px/1 var(--mono);
+  border: 1px solid var(--rule-strong);
+  padding: 2px 5px;
+  background: var(--tint);
+}
+
+.tour {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+}
+
+.tour-frame {
+  position: absolute;
+  border: 2px solid var(--rust);
+  box-shadow: 0 0 0 9999px rgba(43, 38, 32, 0.5);
+  pointer-events: none;
+}
+
+.tour-card {
+  position: absolute;
+  padding: 16px 18px;
+}
+
+.tour-card small {
+  font: 500 10.5px/1 var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--rust);
+}
+
+.tour-card h2 {
+  font-size: 17px;
+  margin: 5px 0 6px;
+}
+
+.note .plain-button {
+  border: 0;
+}
+
 /* ---------- Narrow screens ---------- */
 
 @media (max-width: 900px) {
@@ -789,7 +860,9 @@ legend {
   }
   .masthead,
   .inputs,
-  .toasts {
+  .toasts,
+  .tour,
+  .veil {
     display: none !important;
   }
   .app,

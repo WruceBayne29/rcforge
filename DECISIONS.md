@@ -33,3 +33,11 @@ Calls made autonomously while building, newest last.
    more severe of the two cases, rather than about both axes together.
 10. **Footings use the mean effective depth of the two bar layers** (D − cover − φ) for both
     directions, and assume 10 % of the column load for self-weight and backfill.
+11. **One light theme, no dark mode.** The sheet is meant to look like paper; a print stylesheet
+    (the sheet alone, black on white) replaces the dark theme FrameForge has.
+12. **PDF text is written out in plain characters** ("tau_v <= tau_c", "3-20 dia") because the
+    PDF's built-in fonts have no Greek. The on-screen sheet and the browser's Print keep the symbols.
+13. **Drawings set their colours as SVG attributes**, not CSS classes, so the same drawing can be
+    rasterised into the PDF.
+14. **Bar schedules are indicative**: span plus one development length per anchored end, 10 dia hooks,
+    standard bend deductions. Stated on the sheet.

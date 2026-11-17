@@ -15,12 +15,15 @@ import type { Project } from '../model/project';
 import { BeamForm } from './forms/BeamForm';
 import { ColumnForm } from './forms/ColumnForm';
 import { FootingForm } from './forms/FootingForm';
+import { About, Tour } from './Guide';
+import { rasterise } from './rasterise';
 import { SlabForm } from './forms/SlabForm';
 import { Sheet } from './Sheet';
 import { notify, Toasts } from './toast';
 import './styles.css';
 
 const STORAGE_KEY = 'rcforge-project';
+const TOUR_KEY = 'rcforge-tour-done';
 
 function read(key: string): string | null {
   try {
@@ -98,6 +101,49 @@ export function App() {
     const timer = window.setTimeout(() => write(STORAGE_KEY, serializeProject(project)), 300);
     return () => window.clearTimeout(timer);
   }, [project]);
+
+  const [about, setAbout] = useState(false);
+  const [tour, setTour] = useState(() => read(TOUR_KEY) !== '1' && !navigator.webdriver);
+  const [busy, setBusy] = useState(false);
+  const closeTour = useCallback(() => {
+    setTour(false);
+    write(TOUR_KEY, '1');
+  }, []);
+
+  // Number keys switch element; "?" opens the note. Ignored while typing in a field.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (target && /^(INPUT|SELECT|TEXTAREA)$/.test(target.tagName)) return;
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      const element = ELEMENTS[Number(e.key) - 1];
+      if (element) edit({ element: element.id });
+      else if (e.key === '?') setAbout(true);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [edit]);
+
+  const downloadPdf = async () => {
+    if (!outcome.ok) {
+      notify('Correct the inputs before making a PDF.', 'error');
+      return;
+    }
+    setBusy(true);
+    try {
+      // The PDF library is loaded on demand so it does not slow down the first visit.
+      const { buildReport, reportFileName } = await import('../io/report');
+      const drawings = [...document.querySelectorAll<SVGSVGElement>('.figure svg')];
+      const figures = await Promise.all(drawings.map((svg) => rasterise(svg))).catch(() => []);
+      buildReport({ project, design: outcome.design, figures }).save(reportFileName(project));
+      notify('PDF calculation sheet downloaded.');
+    } catch (e) {
+      console.error(e);
+      notify('Could not create the PDF.', 'error');
+    } finally {
+      setBusy(false);
+    }
+  };
 
   const openFile = async (file: File) => {
     try {
@@ -185,8 +231,14 @@ export function App() {
           <button type="button" onClick={share}>
             Share
           </button>
-          <button type="button" className="solid" onClick={() => window.print()}>
-            Print sheet
+          <button type="button" onClick={() => window.print()}>
+            Print
+          </button>
+          <button type="button" onClick={() => setAbout(true)}>
+            About
+          </button>
+          <button type="button" className="solid" disabled={busy} onClick={downloadPdf}>
+            {busy ? 'Preparing…' : 'Download PDF'}
           </button>
           <input
             ref={fileInput}
@@ -234,6 +286,16 @@ export function App() {
         </main>
       </div>
       <Toasts />
+      {about && (
+        <About
+          onClose={() => setAbout(false)}
+          onTour={() => {
+            setAbout(false);
+            setTour(true);
+          }}
+        />
+      )}
+      {tour && <Tour onClose={closeTour} />}
     </div>
   );
 }

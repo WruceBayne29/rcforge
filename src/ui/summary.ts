@@ -1,4 +1,5 @@
-import { fix, num } from '../is456';
+import { beamSchedule, columnSchedule, fix, footingSchedule, num, slabSchedule } from '../is456';
+import type { ScheduleRow } from '../is456';
 import type { Design } from '../model/project';
 
 /** The "provide" list: what the designer would carry to the drawing. */
@@ -65,3 +66,32 @@ export function provisions(design: Design): Array<[string, string]> {
 
 export const VERDICT = { ok: 'SAFE', warn: 'CHECK', fail: 'REVISE' } as const;
 export const MARK = { ok: '✓', warn: '!', fail: '✗' } as const;
+
+/** Bar bending schedule for whichever element is open. */
+export function schedule(design: Design): ScheduleRow[] {
+  switch (design.kind) {
+    case 'beam':
+      return beamSchedule(design.result);
+    case 'column':
+      return columnSchedule(design.result);
+    case 'slab':
+      return slabSchedule(design.result);
+    case 'footing':
+      return footingSchedule(design.result);
+  }
+}
+
+export function scheduleNote(design: Design): string {
+  switch (design.kind) {
+    case 'beam':
+      return 'Main bars are taken as the span plus one development length at each anchored end.';
+    case 'column':
+      return 'Longitudinal bars include one compression lap; ties are counted over the unsupported length.';
+    case 'slab':
+      return design.result.input.type === 'two-way'
+        ? 'For the whole panel. Top bars at continuous edges extend 0.3 of the span.'
+        : 'For a strip one metre wide.';
+    case 'footing':
+      return 'Straight bars between the side covers.';
+  }
+}

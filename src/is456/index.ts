@@ -5,6 +5,7 @@ export * from './detailing';
 export * from './flexure';
 export * from './footing';
 export * from './materials';
+export * from './schedule';
 export * from './serviceability';
 export * from './shear';
 export * from './slab';

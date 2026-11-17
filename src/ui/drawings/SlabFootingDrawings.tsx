@@ -104,7 +104,7 @@ export function SlabSection({ design }: { design: SlabDesign }) {
 export function FootingDrawing({ design }: { design: FootingDesign }) {
   const { input, L, B, D, steel } = design;
   const W = 380;
-  const H = 400;
+  const H = 430;
   const s = Math.min(230 / L, 190 / B);
   const cx = 190;
   const planTop = 22;
@@ -116,7 +116,7 @@ export function FootingDrawing({ design }: { design: FootingDesign }) {
   const along = steel.find((b) => b.direction === 'L') ?? steel[0];
   const across = steel.find((b) => b.direction === 'B') ?? steel[0];
   const edge = (input.cover + input.barDiameter / 2) * s;
-  const secTop = planBottom + 62;
+  const secTop = planBottom + 96;
   const padH = Math.max(D * s, 26);
   const stub = 34;
   return (

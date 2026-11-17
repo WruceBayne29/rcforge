@@ -14,15 +14,18 @@
   links), and the UI in the calculation-sheet style: forms for all four elements, title block,
   verdict stamp, to-scale section drawings, interaction chart, three-column working.
 
+- Bar bending schedules, PDF calculation sheet (`src/io/report.ts`), About note, first-visit tour,
+  number-key shortcuts, phone layout, print stylesheet.
+- `scripts/e2e.mjs`: 58 Playwright checks, passing locally.
+
 ## In progress
-- MVP deployed; finishing features.
+- Docs and deliverables.
 
 ## Exact next step
-1. `scripts/e2e.mjs` (Playwright, adapt from FrameForge) and run it on the live site.
-2. Bar bending schedule (`src/is456/schedule.ts` + a table on the sheet).
-3. PDF calculation sheet (`src/io/report.ts`, jsPDF + autotable; rasterise the on-screen SVG).
-4. Help dialog + first-run tour; phone layout check.
-5. README, docs/THEORY.md, CONTRIBUTING, templates, LINKEDIN_POST.md, CV_BULLETS.md, screenshots.
+1. Run `npm run e2e` against the live site after the deploy.
+2. `scripts/screenshots.mjs` (adapt from FrameForge) → docs/screenshots + hero GIF.
+3. README (full), docs/THEORY.md, CONTRIBUTING.md, issue templates, LINKEDIN_POST.md, CV_BULLETS.md.
+4. Self-review of screenshots; fix what looks wrong; mark COMPLETE.
 
 ## Milestone checklist
 - [x] 1. Code core: materials, flexure, shear
@@ -31,8 +34,8 @@
 - [x] 4. Slabs and footings
 - [x] 5. Validation suite
 - [x] 6. MVP deploy
-- [ ] 7. Full UI
-- [ ] 8. Export
-- [ ] 9. Polish
+- [x] 7. Full UI
+- [x] 8. Export
+- [x] 9. Polish
 - [ ] Final docs & deliverables
 - [ ] Self-review on live site

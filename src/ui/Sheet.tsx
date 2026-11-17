@@ -3,7 +3,8 @@ import type { Design, Project } from '../model/project';
 import { BeamSection } from './drawings/BeamSection';
 import { ColumnSection, InteractionChart } from './drawings/ColumnDrawings';
 import { FootingDrawing, SlabSection } from './drawings/SlabFootingDrawings';
-import { MARK, VERDICT, provisions } from './summary';
+import { fix, num, scheduleWeight } from '../is456';
+import { MARK, VERDICT, provisions, schedule, scheduleNote } from './summary';
 
 function Figures({ design }: { design: Design }) {
   switch (design.kind) {
@@ -57,6 +58,7 @@ export function Sheet({
   const { sections, checks, status } = design.result;
   const today = new Date().toISOString().slice(0, 10);
   let stepNumber = 0;
+  const bars = schedule(design);
   return (
     <article className="sheet" data-tour="sheet">
       <header className="title-block">
@@ -173,6 +175,37 @@ export function Sheet({
               );
             }),
           ])}
+        </tbody>
+      </table>
+      <table className="calc schedule">
+        <thead>
+          <tr>
+            <th style={{ width: 62 }}>Mark</th>
+            <th>Bar schedule (indicative)</th>
+            <th style={{ width: 70 }}>Bar</th>
+            <th style={{ width: 60 }}>No.</th>
+            <th style={{ width: 96 }}>Length, mm</th>
+            <th style={{ width: 84 }}>Total, m</th>
+            <th style={{ width: 92 }}>Weight, kg</th>
+          </tr>
+        </thead>
+        <tbody>
+          {bars.map((r) => (
+            <tr key={r.mark}>
+              <td className="ref-cell">{r.mark}</td>
+              <td>{r.description}</td>
+              <td className="figure-cell">{r.diameter}φ</td>
+              <td className="figure-cell">{r.count}</td>
+              <td className="figure-cell">{r.length}</td>
+              <td className="figure-cell">{fix(r.total, 1)}</td>
+              <td className="figure-cell">{fix(r.weight, 1)}</td>
+            </tr>
+          ))}
+          <tr className="total-row">
+            <td />
+            <td colSpan={5}>{scheduleNote(design)}</td>
+            <td className="figure-cell">{num(scheduleWeight(bars))}</td>
+          </tr>
         </tbody>
       </table>
       <footer className="footnote">
