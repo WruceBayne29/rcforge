@@ -9,25 +9,28 @@
   diagram, slenderness, biaxial), `designSlab()` (one-way, two-way, Tables 26 / 27),
   `designFooting()` (sizing, shear, punching, flexure, anchorage).
 
+- Validation suite (75 published / closed-form values) → VALIDATION.md.
+- `src/model/` (project, input validation, 11 worked examples), `src/io/` (validated JSON, share
+  links), and the UI in the calculation-sheet style: forms for all four elements, title block,
+  verdict stamp, to-scale section drawings, interaction chart, three-column working.
+
 ## In progress
-- Validation suite, then the UI.
+- MVP deployed; finishing features.
 
 ## Exact next step
-1. `tests/validation/` + VALIDATION.md: published code values (xu,max/d, Mu,lim coefficients,
-   pt,lim, steel curve points, Table 19, Table 27, development lengths) against the engine.
-   Replace `tests/placeholder.test.ts`.
-2. UI in the calculation-sheet style described in HANDOVER.md. `src/ui/App.tsx` is still a
-   placeholder and the live site shows only a heading. Build order: sheet layout + beam form →
-   deploy as MVP → column (with interaction chart) → slab → footing → section drawings.
-3. Export (PDF sheet, JSON, share URL), polish, docs, Playwright self-review.
+1. `scripts/e2e.mjs` (Playwright, adapt from FrameForge) and run it on the live site.
+2. Bar bending schedule (`src/is456/schedule.ts` + a table on the sheet).
+3. PDF calculation sheet (`src/io/report.ts`, jsPDF + autotable; rasterise the on-screen SVG).
+4. Help dialog + first-run tour; phone layout check.
+5. README, docs/THEORY.md, CONTRIBUTING, templates, LINKEDIN_POST.md, CV_BULLETS.md, screenshots.
 
 ## Milestone checklist
 - [x] 1. Code core: materials, flexure, shear
 - [x] 2. Deflection, anchorage, detailing
 - [x] 3. Columns
 - [x] 4. Slabs and footings
-- [ ] 5. Validation suite
-- [ ] 6. MVP deploy
+- [x] 5. Validation suite
+- [x] 6. MVP deploy
 - [ ] 7. Full UI
 - [ ] 8. Export
 - [ ] 9. Polish

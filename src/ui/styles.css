@@ -1,0 +1,811 @@
+/*
+ * RCForge looks like an engineer's calculation sheet: warm paper, ink, thin ruled lines and a
+ * drawing-style title block. Square corners throughout; colour is used only to carry meaning.
+ */
+:root {
+  --desk: #e7e0d2;
+  --paper: #fcfaf5;
+  --tint: #f4efe4;
+  --ink: #2b2620;
+  --ink-soft: #5f5648;
+  --ink-faint: #8b8172;
+  --rule: #d8cfbe;
+  --rule-strong: #9a8d78;
+  --rust: #a4421b;
+  --ochre: #a9730f;
+  --olive: #55652a;
+  --rust-wash: #f6e6dd;
+  --ochre-wash: #f6ecd5;
+  --olive-wash: #e9edd9;
+  --serif: 'Source Serif 4', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+  --sans: 'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--desk);
+  color: var(--ink);
+  font: 14px/1.5 var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* ---------- Masthead ---------- */
+
+.masthead {
+  display: flex;
+  align-items: flex-end;
+  gap: 28px;
+  padding: 14px 22px 0;
+  background: var(--paper);
+  border-bottom: 2px solid var(--ink);
+  flex-wrap: wrap;
+}
+
+.wordmark {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 10px;
+  line-height: 1.15;
+}
+
+.wordmark strong {
+  font: 600 25px/1 var(--serif);
+  letter-spacing: -0.01em;
+}
+
+.wordmark span {
+  font: 400 11px/1.4 var(--mono);
+  color: var(--ink-soft);
+  letter-spacing: 0.02em;
+  margin-top: 5px;
+}
+
+.elements {
+  display: flex;
+  gap: 2px;
+  align-self: flex-end;
+}
+
+.elements button {
+  border: 0;
+  background: none;
+  padding: 9px 14px 10px;
+  font: 500 15px/1 var(--serif);
+  color: var(--ink-soft);
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  cursor: pointer;
+}
+
+.elements button:hover {
+  color: var(--ink);
+}
+
+.elements button[aria-selected='true'] {
+  color: var(--ink);
+  border-bottom-color: var(--rust);
+  font-weight: 600;
+}
+
+.masthead .spacer {
+  flex: 1;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.actions button,
+.actions select,
+.plain-button {
+  border: 1px solid transparent;
+  background: none;
+  padding: 5px 9px;
+  font: 400 13px/1.2 var(--sans);
+  color: var(--ink);
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: var(--rule-strong);
+  text-underline-offset: 3px;
+  border-radius: 0;
+}
+
+.actions select {
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule-strong);
+  max-width: 190px;
+}
+
+.actions button:hover,
+.plain-button:hover {
+  text-decoration-color: var(--rust);
+  color: var(--rust);
+}
+
+.actions button.solid {
+  text-decoration: none;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  padding: 6px 12px;
+  font-weight: 500;
+}
+
+.actions button.solid:hover {
+  background: var(--rust);
+  border-color: var(--rust);
+  color: var(--paper);
+}
+
+:focus-visible {
+  outline: 2px solid var(--rust);
+  outline-offset: 2px;
+}
+
+/* ---------- Workspace ---------- */
+
+.workspace {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+
+.inputs {
+  width: 318px;
+  flex: none;
+  overflow-y: auto;
+  padding: 18px 20px 30px;
+  background: var(--tint);
+  border-right: 1px solid var(--rule-strong);
+}
+
+.inputs h2 {
+  font: 600 17px/1.2 var(--serif);
+  margin: 0 0 2px;
+}
+
+.inputs .lede {
+  margin: 0 0 14px;
+  font-size: 12.5px;
+  color: var(--ink-soft);
+}
+
+fieldset {
+  border: 0;
+  border-top: 1px solid var(--rule-strong);
+  margin: 0 0 14px;
+  padding: 10px 0 0;
+}
+
+legend {
+  padding: 0 8px 0 0;
+  font: 500 11px/1 var(--mono);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.field {
+  display: grid;
+  grid-template-columns: 1fr 118px;
+  align-items: baseline;
+  gap: 10px;
+  padding: 3px 0;
+}
+
+.field > span:first-child {
+  font-size: 13px;
+}
+
+.field .hint {
+  display: block;
+  font-size: 11px;
+  color: var(--ink-faint);
+  line-height: 1.3;
+}
+
+.entry {
+  display: flex;
+  align-items: baseline;
+  border-bottom: 1px solid var(--rule-strong);
+}
+
+.entry:focus-within {
+  border-bottom-color: var(--rust);
+}
+
+.entry input,
+.entry select {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  padding: 3px 2px;
+  font: 500 13.5px/1.3 var(--mono);
+  text-align: right;
+  border-radius: 0;
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.entry input::-webkit-outer-spin-button,
+.entry input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.entry select {
+  text-align: left;
+  font-family: var(--sans);
+  font-weight: 400;
+  appearance: auto;
+}
+
+.entry input:focus,
+.entry select:focus {
+  outline: none;
+}
+
+.entry .unit {
+  font: 400 11px/1 var(--mono);
+  color: var(--ink-faint);
+  padding-left: 4px;
+  white-space: nowrap;
+}
+
+.field.wide {
+  grid-template-columns: 1fr;
+  gap: 2px;
+}
+
+.field.wide .entry input {
+  text-align: left;
+  font-family: var(--sans);
+  font-weight: 400;
+}
+
+.choice {
+  display: flex;
+  gap: 14px;
+  padding: 4px 0 6px;
+  flex-wrap: wrap;
+}
+
+.choice label {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.choice input,
+.tick input {
+  accent-color: var(--ink);
+}
+
+.tick {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  padding: 4px 0;
+  cursor: pointer;
+}
+
+/* ---------- The sheet ---------- */
+
+.desk {
+  flex: 1;
+  overflow: auto;
+  padding: 22px 26px 60px;
+}
+
+.sheet {
+  max-width: 940px;
+  margin: 0 auto;
+  background: var(--paper);
+  border: 1px solid var(--rule-strong);
+  box-shadow:
+    0 1px 0 #fff inset,
+    3px 4px 0 rgba(43, 38, 32, 0.07);
+}
+
+.title-block {
+  display: grid;
+  grid-template-columns: 1.1fr 1.6fr 0.9fr 0.6fr;
+  border-bottom: 2px solid var(--ink);
+}
+
+.title-block > div {
+  padding: 7px 12px 8px;
+  border-right: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+  min-width: 0;
+}
+
+.title-block > div:nth-child(4n) {
+  border-right: 0;
+}
+
+.title-block > div:nth-last-child(-n + 4) {
+  border-bottom: 0;
+}
+
+.title-block small {
+  display: block;
+  font: 400 9.5px/1.2 var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 2px;
+}
+
+.title-block b {
+  font: 600 15px/1.25 var(--serif);
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.title-block .value {
+  font: 400 13px/1.3 var(--mono);
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.title-block input {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  font: 600 15px/1.25 var(--serif);
+}
+
+.title-block input.value {
+  font: 400 13px/1.3 var(--mono);
+}
+
+.title-block input:focus {
+  outline: none;
+  background: var(--ochre-wash);
+}
+
+.overview {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  border-bottom: 1px solid var(--ink);
+}
+
+.figure {
+  padding: 14px 16px 10px;
+  border-right: 1px solid var(--ink);
+  min-width: 0;
+}
+
+.figure svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.figure figcaption,
+.caption {
+  font: 400 10px/1.3 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-top: 6px;
+}
+
+.figure figure {
+  margin: 0 0 10px;
+}
+
+.verdict {
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+.stamp {
+  align-self: flex-start;
+  transform: rotate(-4deg);
+  border: 2.5px solid currentColor;
+  outline: 1px solid currentColor;
+  outline-offset: 2px;
+  padding: 5px 16px 4px;
+  font: 600 21px/1 var(--mono);
+  letter-spacing: 0.2em;
+  margin: 4px 0 6px 4px;
+}
+
+.stamp.ok {
+  color: var(--olive);
+}
+.stamp.warn {
+  color: var(--ochre);
+}
+.stamp.fail {
+  color: var(--rust);
+}
+
+.provide {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--rule);
+}
+
+.provide li {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 5px 0;
+  border-bottom: 1px solid var(--rule);
+  font-size: 13px;
+}
+
+.provide li span:last-child {
+  font: 500 13px/1.5 var(--mono);
+  text-align: right;
+}
+
+.checks {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+
+.checks td {
+  padding: 4px 0;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+
+.checks td:first-child {
+  width: 20px;
+  font: 600 13px/1.5 var(--mono);
+}
+
+.checks td:nth-child(2) {
+  font-weight: 500;
+  white-space: nowrap;
+  padding-right: 12px;
+}
+
+.checks td:last-child {
+  color: var(--ink-soft);
+  font: 400 12px/1.6 var(--mono);
+}
+
+.mark-ok {
+  color: var(--olive);
+}
+.mark-warn {
+  color: var(--ochre);
+}
+.mark-fail {
+  color: var(--rust);
+}
+
+.calc {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.calc col.ref {
+  width: 122px;
+}
+
+.calc col.out {
+  width: 232px;
+}
+
+.calc thead th {
+  font: 500 10px/1 var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-align: left;
+  color: var(--ink-soft);
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--ink);
+  background: var(--tint);
+}
+
+.calc th + th,
+.calc td + td {
+  border-left: 1px solid var(--rule-strong);
+}
+
+.calc td {
+  padding: 8px 12px;
+  vertical-align: top;
+  border-bottom: 1px solid var(--rule);
+}
+
+.calc tr.heading td {
+  font: 600 14.5px/1.2 var(--serif);
+  padding: 13px 12px 6px;
+  border-bottom: 1px solid var(--rule-strong);
+  border-left: 0;
+}
+
+.calc tr.heading td i {
+  font: 400 11px/1 var(--mono);
+  font-style: normal;
+  color: var(--ink-faint);
+  margin-right: 8px;
+}
+
+.calc .ref-cell {
+  font: 400 11px/1.5 var(--mono);
+  color: var(--ink-soft);
+}
+
+.calc .work b {
+  display: block;
+  font-weight: 500;
+  font-size: 13px;
+  margin-bottom: 1px;
+}
+
+.calc .work span {
+  display: block;
+  font: 400 12.5px/1.6 var(--mono);
+  color: var(--ink-soft);
+  overflow-wrap: anywhere;
+}
+
+.calc .out-cell {
+  font: 500 12.5px/1.55 var(--mono);
+  overflow-wrap: anywhere;
+}
+
+.calc .out-cell.ok {
+  color: var(--olive);
+}
+.calc .out-cell.warn {
+  color: var(--ochre);
+}
+.calc .out-cell.fail {
+  color: var(--rust);
+}
+
+.footnote {
+  padding: 10px 14px 12px;
+  font-size: 11.5px;
+  color: var(--ink-faint);
+  border-top: 1px solid var(--ink);
+}
+
+.problems {
+  max-width: 940px;
+  margin: 0 auto;
+  background: var(--rust-wash);
+  border: 1px solid var(--rust);
+  padding: 16px 20px;
+  color: var(--rust);
+}
+
+.problems h3 {
+  margin: 0 0 6px;
+  font: 600 16px/1.2 var(--serif);
+}
+
+.problems ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+/* ---------- Toasts, dialogs ---------- */
+
+.toasts {
+  position: fixed;
+  left: 50%;
+  bottom: 26px;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  z-index: 60;
+  pointer-events: none;
+}
+
+.toast {
+  padding: 8px 16px;
+  background: var(--ink);
+  color: var(--paper);
+  font: 500 13px/1.3 var(--sans);
+  box-shadow: 3px 4px 0 rgba(43, 38, 32, 0.15);
+  max-width: 90vw;
+}
+
+.toast.error {
+  background: var(--rust);
+}
+
+.veil {
+  position: fixed;
+  inset: 0;
+  background: rgba(43, 38, 32, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  padding: 16px;
+}
+
+.note {
+  width: min(560px, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+  background: var(--paper);
+  border: 1px solid var(--ink);
+  box-shadow: 5px 6px 0 rgba(43, 38, 32, 0.18);
+  padding: 22px 24px;
+}
+
+.note h2 {
+  margin: 0 0 8px;
+  font: 600 20px/1.2 var(--serif);
+}
+
+.note h3 {
+  margin: 14px 0 4px;
+  font: 500 11px/1 var(--mono);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.note p {
+  margin: 0 0 8px;
+  color: var(--ink-soft);
+}
+
+.note .row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.note button {
+  border: 1px solid var(--ink);
+  background: var(--paper);
+  padding: 6px 14px;
+  cursor: pointer;
+  border-radius: 0;
+}
+
+.note button.solid {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+/* ---------- Narrow screens ---------- */
+
+@media (max-width: 900px) {
+  .workspace {
+    flex-direction: column;
+    overflow-y: auto;
+  }
+  .inputs {
+    width: auto;
+    border-right: 0;
+    border-bottom: 1px solid var(--rule-strong);
+    overflow: visible;
+  }
+  .desk {
+    overflow: visible;
+    padding: 14px 10px 40px;
+  }
+  .masthead {
+    gap: 10px;
+    padding: 10px 12px 0;
+  }
+  .elements {
+    order: 3;
+    width: 100%;
+    overflow-x: auto;
+  }
+  .overview {
+    grid-template-columns: 1fr;
+  }
+  .figure {
+    border-right: 0;
+    border-bottom: 1px solid var(--ink);
+  }
+  .title-block {
+    grid-template-columns: 1fr 1fr;
+  }
+  .title-block > div:nth-child(4n) {
+    border-right: 1px solid var(--ink);
+  }
+  .title-block > div:nth-child(2n) {
+    border-right: 0;
+  }
+  .title-block > div:nth-last-child(-n + 4) {
+    border-bottom: 1px solid var(--ink);
+  }
+  .title-block > div:nth-last-child(-n + 2) {
+    border-bottom: 0;
+  }
+  .calc col.ref {
+    width: 78px;
+  }
+  .calc col.out {
+    width: 118px;
+  }
+  .calc td,
+  .calc thead th {
+    padding: 7px 8px;
+  }
+}
+
+/* ---------- Print: the sheet alone, as a calculation sheet should be ---------- */
+
+@media print {
+  body {
+    background: #fff;
+  }
+  .masthead,
+  .inputs,
+  .toasts {
+    display: none !important;
+  }
+  .app,
+  .workspace,
+  .desk {
+    display: block;
+    height: auto;
+    overflow: visible;
+    padding: 0;
+  }
+  .sheet {
+    max-width: none;
+    border: 1px solid #000;
+    box-shadow: none;
+  }
+  .calc tr {
+    break-inside: avoid;
+  }
+}
