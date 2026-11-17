@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "Browser-based reinforced concrete design to IS 456:2000 \u2014 beams, columns, slabs and footings with worked steps",
+  "description": "Browser-based reinforced concrete design to IS 456:2000 — beams, columns, slabs and footings with worked steps",
   "license": "MIT",
   "scripts": {
     "dev": "vite",
@@ -22,6 +22,9 @@
     "validation": "WRITE_VALIDATION=1 vitest run tests/validation"
   },
   "dependencies": {
+    "@fontsource/ibm-plex-mono": "^5.3.0",
+    "@fontsource/ibm-plex-sans": "^5.3.0",
+    "@fontsource/source-serif-4": "^5.3.1",
     "jspdf": "^4.2.1",
     "jspdf-autotable": "^5.0.9",
     "react": "^19.3.1",
