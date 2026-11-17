@@ -24,3 +24,12 @@ Calls made autonomously while building, newest last.
 7. **Continuous beams are designed at the first interior support** with the Table 12 / 13
    coefficients (moment wl²/10 dead + wl²/9 imposed, shear 0.6 wl), as a rectangular section because
    the flange is in tension there.
+8. **Table 26 (two-way slab coefficients) is typed in from memory**, because IS 456 does not follow
+   the BS 8110 yield-line equations exactly (cases with both long edges discontinuous run up to
+   12 % lower). Three tests guard it: agreement with those equations within that margin, smooth
+   variation with aspect ratio, and negative ≈ 4/3 × positive. Verify against the code before
+   relying on it.
+9. **Minimum eccentricity in columns is applied about one axis at a time** (cl. 25.4), taking the
+   more severe of the two cases, rather than about both axes together.
+10. **Footings use the mean effective depth of the two bar layers** (D − cover − φ) for both
+    directions, and assume 10 % of the column load for self-weight and backfill.
